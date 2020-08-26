@@ -1,0 +1,30 @@
+package main
+import "fmt"
+
+func main(){
+       var digits string = "23" 
+	   var result []string
+	   result = letterCombinations(digits)
+       fmt.Println("%s",result)
+}
+
+var table []string = []string {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
+
+func letterCombinations(digits string) []string {
+    if len(digits) == 0 {
+        return []string{}
+    }
+    comb_result := []string{""}
+    for i := 0; i < len(digits); i++ {
+        comb := []string{}
+		m := table[digits[i] - '2']
+        for j := 0; j < len(m); j++ {
+            for x := 0; x < len(comb_result); x++ {
+                comb = append(comb, comb_result[x] + string([]byte{m[j]}))
+            }
+        }
+        comb_result = comb
+    }
+
+    return comb_result
+}
