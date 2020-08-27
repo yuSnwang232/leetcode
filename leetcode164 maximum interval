@@ -1,0 +1,59 @@
+package main
+import "fmt"
+import "math"
+
+func main(){
+       nums := []int{3,6,9,1} 
+	   var result int
+	   result = maximumGap(nums)
+       fmt.Println("%d",result)
+}
+
+
+
+func maximumGap(nums []int) int {
+	length := len(nums)
+	if length == 0{
+		return 0
+	}
+
+	max, min := math.MinInt32, math.MaxInt32
+	for _, i := range nums {
+		if i > max {
+			max = i
+		}
+
+		if i < min {
+			min = i
+		}
+	}
+	// 每个桶的大小
+	size := (max - min) / len(nums) + 1
+	mMin, mMax := map[int]int{}, map[int]int{}
+	for _, num := range nums {
+		k := (num - min) / size  // 在第几个桶
+	
+		if num > mMax[k] {
+			mMax[k] = num
+		}
+	
+		if v, ok := mMin[k]; !ok || num < v {
+			mMin[k] = num
+		}
+    }
+
+	m := 0 
+	n := 0
+	// 比较相邻桶的最大区间
+	for i := 1; i < len(nums); i++ {
+		if min, ok := mMin[i]; ok {
+			t := min - mMax[n]
+			if t > m {
+				m = t
+			}
+			n = i
+		}
+	}
+	return m
+	
+}
