@@ -1,0 +1,51 @@
+package main
+import "fmt"
+
+func main(){
+       nums := []int{3,2,4,1} 
+       var result []int
+       result = pancakeSort(nums)
+       fmt.Println("%d",result)
+}
+
+func pancakeSort(A []int) []int {
+	length := len(A) - 1
+	result := make([]int, 0)
+	
+	for length >= 0 {
+	    index := 0
+		num_max := 0
+
+		for i := 0; i < length+1 ; i++ {
+			if A[i] > num_max {
+				index = i
+				num_max = A[i]				
+			}
+		}
+
+		if index == length {
+			length--
+			continue
+		}
+
+		if index != 0 {
+			result = append(result, index+1)
+			Reverse(A, 0, index)
+		}
+		
+		
+		result = append(result, length+1)
+		Reverse(A, 0, length)
+		length--
+	}
+	return result
+}
+
+func Reverse(A []int, intial int, length int) {
+	
+    for intial < length {
+		A[intial], A[length] = A[length], A[intial]
+		length--
+		intial++
+	}
+}
