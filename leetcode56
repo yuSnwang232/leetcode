@@ -1,0 +1,85 @@
+/**
+@merge.go
+@author：yuSnwang
+@time:2020.8.31
+*/
+package main
+ 
+import (
+"fmt"
+"sort"
+)
+ 
+func main(){
+     intervals := [][]int{{1,4},{4,5},{5,6}}
+     var result [][]int
+     result = merge(intervals) 
+     fmt.Println("%d",result)
+}
+
+
+/**
+ * merge intervals which are overlapped
+ *
+ * @param [][]int intervals
+ * @return [][]int 
+ * @private
+ */
+
+func merge(intervals [][]int) [][]int {
+    //Interval sorting
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+    // merge
+    result:=[][]int{} 
+    temp:=[]int {}
+    for i := 0; i < len(intervals); i++ {
+        if len(result)==0 || temp[1] < intervals[i][0] {
+             result = append(result,intervals[i])
+             temp = intervals[i]
+        }else if  temp[1] < intervals[i][1]{
+             temp[1] = intervals[i][1]
+        }
+    }
+    return result
+}
+
+/* another way
+func merge(intervals [][]int) [][]int {
+	result := [][]int{}
+	temp := [][]int{}
+	//begin of the intervals:1,end of the intervals:0
+	for i := 0; i < len(intervals); i++ {
+		temp = append(temp, []int{intervals[i][0], 1})
+		temp = append(temp, []int{intervals[i][1], -1})
+	}
+	//begin sort following the number in intervals
+	sort.Slice(temp, func(i, j int) bool {
+		if temp[i][0] < temp[j][0] {
+			return true
+		}else if temp[i][0] == temp[j][0] && temp[i][1] >= temp[j][1] {
+			return true
+		}else{
+		    return false
+		}
+		
+	})
+	//traverse it doing a sum and merge when sum is 0
+	var sum int
+	var start int
+	for j := 0; j < len(temp); j++ {
+		if sum == 0 {
+			start = temp[j][0]
+		}
+		
+		sum = sum + temp[j][1]
+		
+		if sum == 0 {
+			result = append(result, []int{start, temp[j][0]})
+		}
+	}
+
+	return result
+}
+*/
