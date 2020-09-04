@@ -1,0 +1,94 @@
+/**
+@canMeasureWater.go
+@author：yuSnwang
+@time:2020.9.3
+*/
+package main
+ 
+import (
+"fmt"
+)
+ 
+func main(){
+     x := 3
+	 y := 5
+	 z := 4
+	 var result bool
+     result =  canMeasureWater(x,y,z) 
+     fmt.Println("%t",result)
+     //fmt.Println("%b",matrix)
+}
+
+/*
+ * canMeasureWater
+ *
+ * @param x
+ * @param y
+ * @param z
+ * @return bool
+ 
+ * @private
+ */
+
+ //we can consider it as calculateing the largest common divisor
+func canMeasureWater(x int, y int, z int) bool {
+	//two speacial situation
+    if x + y < z {
+		return false
+	}
+	if x == 0 || y == 0 {
+		return x + y == z || z == 0
+	}
+	return z % GCD(x, y) == 0
+}
+
+func GCD(x, y int) int {
+	if x % y == 0 {
+		return y
+	}
+	return GCD(y, x%y)
+}
+
+/*
+var x1, y1, z1 int
+
+func canMeasureWater(x int, y int, z int) bool {
+	x1 = x
+	y1 = y
+	z1 = z
+	m := make(map[[2]int]struct{})
+	return dfs(&m, 0, 0)
+}
+
+func dfs(m *map[[2]int]struct{}, xbottle, ybottle int) bool {
+	
+    //successful
+    if xbottle == z1 || ybottle == z1 || xbottle + ybottle == z1 {
+		return true
+	}
+
+	//fail
+	if _, exist := (*m)[[2]int{xbottle, ybottle}]; exist {
+		return false
+	}
+
+	(*m)[[2]int{xbottle, ybottle}] = struct{}{}
+
+	return dfs(m, x1, ybottle) ||    //full x 
+		dfs(m, xbottle, y1) ||       //full y
+		dfs(m, 0, ybottle) ||        //empty x
+		dfs(m, xbottle, 0) ||        //empty y
+		dfs(m, xbottle-min(xbottle, y1-ybottle), ybottle+min(xbottle, y1-ybottle)) ||  //x pour into y until y is full or x is empty
+		dfs(m, xbottle+min(ybottle, x1-xbottle), ybottle-min(ybottle, x1-xbottle))     //y pour into x until x is full or y is empty
+}
+
+//min function
+func min(a, b int) int {
+
+	if a <= b {
+		return a
+	} else {
+		return b
+	}
+}
+*/
