@@ -1,0 +1,142 @@
+/**
+@allCellsDistOrder.go
+@author：yuSnwang
+@time:2020.9.3
+*/
+package main
+ 
+import (
+"fmt"
+"math"
+)
+ 
+func main(){
+     R := 1;
+	 C := 2;
+	 r0 := 0;
+	 c0 := 0;
+	 var result [][]int
+     result =  allCellsDistOrder(R,C,r0,c0) 
+     fmt.Println("%d",result)
+}
+
+
+/**
+ * allCellsDistOrder
+ *
+ * @param int R
+ * @param int C
+ * @param int r0
+ * @param int c0
+ * @return [][]int
+ 
+ * @private
+ */
+
+/*
+func abs(nums int) int {
+	return int(math.Abs(float64(nums)))
+}
+*/
+
+func allCellsDistOrder(R int, C int, r0 int, c0 int) [][]int {
+	m := make(map[int][][]int)
+
+	distmax := 0
+	for r := 0; r < R; r++ {
+		for c := 0; c < C; c++ {
+			dist := int(math.Abs(float64(r - r0))) + int(math.Abs(float64(c - c0)))
+			if dist > distmax {
+				distmax = dist
+			}
+			m[dist] = append(m[dist], []int{r, c})
+		}
+	}
+
+	result := make([][]int, R * C)
+	
+	j := 0
+	for i := 0; i <= distmax; i++ {
+		for _, v := range m[i] {
+			result[j] = v
+			j++
+		}
+	}
+	return result
+}
+/*
+func allCellsDistOrder(R int, C int, r0 int, c0 int) [][]int {
+	result := make([][]int,R*C)
+	counter := 0
+	//create a intervals
+	for i := 0;i < R;i++ {
+		for j := 0;j < C;j++ {
+			result[counter] = []int{i,j}
+			counter++
+		}
+	}
+	//directly sort and output according to the order 
+	sort.Slice(result,func(i,j int) bool{
+		dis := int(math.Abs(float64(result[i][0] - r0))) + int(math.Abs(float64(result[i][1] - c0)))
+		dis2 := int(math.Abs(float64(result[j][0] - r0))) + int(math.Abs(float64(result[j][1] - c0)))
+		return dis < dis2
+	})
+	return result
+}
+*/
+
+/*
+func allCellsDistOrder(R int, C int, r0 int, c0 int) [][]int {
+	result := make([][]int, R*C)
+	result[0] = []int{r0, c0}
+	counter := 1
+	r, c := r0, c0
+	for counter < R * C {
+		r-- // start:r0-1,c0
+		//clock wise
+		// left
+		for c < c0 { 
+			if r >= 0 && c >= 0 {
+				result[counter] = []int{r, c}
+				counter++
+			}
+			r--
+			c++
+		}
+		// up
+		for r < r0 { 
+			if r >= 0 && c < C {
+				result[counter] = []int{r, c}
+				counter++
+			}
+			r++
+			c++
+		}
+		//right
+		for c > c0 { 
+			if r < R && c < C {
+				result[counter] = []int{r, c}
+				counter++
+			}
+			r++
+			c--
+		}
+		//down
+		for r > r0 { 
+			if r < R && c >= 0 {
+				result[counter] = []int{r, c}
+				counter++
+			}
+			r--
+			c--
+		}	
+	}
+	return result
+}
+*/
+
+
+
+
+
+
