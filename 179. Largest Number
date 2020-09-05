@@ -1,0 +1,37 @@
+package main
+
+import(
+	"fmt"
+	"sort"
+	"strconv"
+	"strings"
+)
+
+func main(){
+	nums := []int{10,2}
+	var result string
+	result = largestNumber(nums)
+	fmt.Println("%s",result)
+}
+
+func largestNumber(nums []int) string {
+	
+    result := make([]string, len(nums))
+     number is converted to the corresponding string type
+	for i, num := range nums {
+		result[i] = strconv.Itoa(num)
+	}
+	
+	//Custom sort:a-b > b-a  - : means connect
+	sort.Slice(result, func(i, j int) bool {
+		return result[i]+result[j] > result[j]+result[i]
+	})
+
+	//special situation input[0,0]
+	if result[0] == "0" {
+		return "0"
+	}
+	//String concatenation
+    result_final := strings.Join(result, "")
+	return result_final
+}
