@@ -1,0 +1,136 @@
+package main
+
+import(
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+func main(){
+	nums := []int{1,1,1,2,2,3}
+	k := 2
+	var result []int
+	result = topKFrequent(nums,k)
+	fmt.Println("%d",result)
+}
+
+func topKFrequent(nums []int, k int) []int {
+    occurrences := map[int]int{}
+    for _, num := range nums {
+        occurrences[num]++
+    }
+    values := [][]int{}
+    for key, value := range occurrences {
+        values = append(values, []int{key, value})
+    }
+    result := make([]int, k)
+    qsort(values, 0, len(values) - 1, result, 0, k)
+    return result
+}
+
+func qsort(values [][]int, start, end int, result []int, retIndex, k int) {
+    //get a random k between intervals
+    rand.Seed(time.Now().UnixNano())
+    q := rand.Int() % (end - start + 1) + start;
+    
+    values[q], values[start] = values[start], values[q]
+
+    pivot := values[start][1]
+    index := start
+
+    //make sure any nums in arr[i...q-1] < arr[q]
+    for i := start + 1; i <= end; i++ {
+        if values[i][1] >= pivot {
+            values[index + 1], values[i] = values[i], values[index + 1]
+            index++
+        }
+    }
+
+    values[start], values[index] = values[index], values[start]
+    //k <= q-i
+    if k <= index - start {
+        qsort(values, start, index - 1, result, retIndex, k)
+    } else {
+        for i := start; i <= index; i++ {
+            result[retIndex] = values[i][0]
+            retIndex++
+        }
+        if k > index - start + 1 {
+            qsort(values, index + 1, end, result, retIndex, k - (index - start + 1))
+        }
+    }
+}
+
+/*
+func topKFrequent(nums []int, k int) []int {
+    //traversal and get the appearing times of each numbers
+    appearnums := map[int]int{}
+    for _, num := range nums {
+        appearnums[num]++
+    }
+
+    h := &IHeap{}
+    heap.Init(h)
+    //set a heap and traversal the "appearnums"
+    for key, value := range appearnums {
+        //if the number of elements < k insert the heap
+        heap.Push(h, [2]int{key, value})
+        //if the number of elements > k, Take an element from the end and return
+        if h.Len() > k {
+            heap.Pop(h)
+        }
+    }
+    //tramsfer into []int
+    ret := make([]int, k)
+    for i := 0; i < k; i++ {
+        ret[k - i - 1] = heap.Pop(h).([2]int)[0]
+    }
+    return ret
+}
+
+//Methods to implement interface definitions
+type IHeap [][2]int
+
+func (h IHeap) Len() int           { return len(h) }
+func (h IHeap) Less(i, j int) bool { return h[i][1] < h[j][1] }
+func (h IHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *IHeap) Push(x interface{}) {
+    *h = append(*h, x.([2]int))
+}
+
+func (h *IHeap) Pop() interface{} {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[0 : n-1]
+    return x
+}
+*/
+
+/*
+func topKFrequent(nums []int, k int) []int {
+	result := make([]int, 0, k)
+	//  //traversal and get the appearing times of each numbers
+	appearnums := make(map[int]int, len(nums))
+	for _, n := range nums {
+		appearnums[n]++
+	}
+
+	// sort
+	counts := make([]int, 0, len(appearnums))
+	for _, i := range appearnums {
+		counts = append(counts, i)
+	}
+	sort.Ints(counts)
+
+	min_times := counts[len(counts)-k]
+	// get result according to the min_times
+	for i, j := range appearnums {
+		if j >= min_times {
+			result = append(result, i)
+		}
+	}
+	return result
+}
+*/
