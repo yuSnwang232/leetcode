@@ -1,0 +1,47 @@
+package main
+
+import(
+  "fmt"
+  "strings"
+)
+
+func main(){
+	s := "aaaabbbbcccc"
+	var result string
+	result = sortString(s)
+	fmt.Println("%s",result)
+}
+
+func sortString(s string) string {
+    var result strings.Builder
+    var buckets [26]byte
+
+    //An array of length 26 represents 26 buckets
+    for _, v := range s{
+        buckets[v - 'a'] ++
+    }
+
+    length := len(s)
+    //every time find buckets[i] > 0 
+    //Add the letter corresponding to the bucket to the end of the result string
+
+    for length > 0{
+    //from small to big
+        for i:= 0; i <= 25;i++{
+            if buckets[i] > 0{
+                result.WriteByte('a' + byte(i))
+                buckets[i] --
+                length --
+            }
+        }
+    //from big to small
+        for i:= 25; i >= 0;i--{
+            if buckets[i] > 0{
+                result.WriteByte('a' + byte(i))
+                buckets[i] --
+                length --
+            }
+        }
+    }
+    return result.String()
+}
