@@ -1,0 +1,45 @@
+package main
+
+import(
+  "fmt"
+  "sort"
+)
+
+func main(){
+	s := []int{1,1,5}
+	//var result string
+	nextPermutation(s)
+	//fmt.Println("%s",result)
+}
+
+func nextPermutation(nums []int)  {
+    // Find the first ascending sequence from right to left
+	i := len(nums) - 2  
+	
+	for i >= 0 && nums[i] >= nums[i+1] {
+		i--
+	}
+
+	if i < 0 {
+		// the whole interval is dicreasing sequence and directly sort it
+		sort.Ints(nums)
+	}else {
+
+		j := len(nums)-1
+		// Find the first numeric index coordinate from right to left that is larger than the I index value
+		for j >= 0 {
+		if nums[j] > nums[i]{
+		nums[i], nums[j] = nums[j], nums[i]
+        break
+		}	
+	    j--
+		}
+		
+		sort.Ints(nums[i+1:])
+
+	}
+	fmt.Println(nums)
+}
+
+
+
