@@ -1,0 +1,100 @@
+package main
+
+import(
+  "fmt"
+  "math"
+)
+
+func main(){
+      dividend := 10
+      divisor := 3
+	var result int
+	result = divide(dividend,divisor)
+	fmt.Println("%d",result)
+}
+
+func divide(dividend int, divisor int) int {
+    //special situatiom when divisor = 0
+    if divisor == 0 {
+		return 0
+	}
+    // consider overflow  -2^31/-1 = 2^31 > 2^31 -1
+    if divisor == -1 && dividend == -(math.MaxInt32+1) {
+		return math.MaxInt32
+	}
+    //get the abs of numbers
+    dividend_abs := int(math.Abs(float64(dividend)))
+    divisor_abs := int(math.Abs(float64(divisor)))
+    result := calculate(dividend_abs, divisor_abs)
+	
+    //nagative number add symbol
+	if (dividend >= 0 && divisor < 0) || (dividend <= 0 && divisor > 0){
+		return -result
+	}
+        return result
+}
+
+func calculate(dividend int, divisor int) int{
+
+	result := 0
+	if divisor == 1 {
+		result = dividend
+		dividend = 0
+	}
+
+	guess, compare := 31, 0
+	for compare+divisor <= dividend {
+		if compare+divisor<<guess <= dividend {
+                                //Dichotomous comparison
+			compare += divisor << guess
+			result += 1 << guess
+		}
+		guess--
+	}
+	return result
+}
+
+
+
+
+/*
+
+func divide(dividend int, divisor int) int {
+	//special situatiom when divisor = 0
+      if divisor == 0 {
+		return 0
+	}
+
+	// consider overflow  -2^31/-1 = 2^31 > 2^31 -1
+	if divisor == -1 && dividend == -(math.MaxInt32+1) {
+		return math.MaxInt32
+	}
+        
+      //get the abs of numbers
+	dividend_abs := int(math.Abs(float64(dividend)))
+	divisor_abs := int(math.Abs(float64(divisor)))
+	result := calculate(dividend_abs, divisor_abs)
+	
+        //nagative number add symbol
+	if (dividend >= 0 && divisor < 0) || (dividend <= 0 && divisor > 0){
+		return -result
+	}
+
+	return result
+}
+
+func calculate(dividend int, divisor int) int {
+	result := 0
+	for dividend >= divisor {
+		multi := 1
+		for multi * divisor <= (dividend >> 1) {
+			multi <<= 1
+		}
+
+		result += multi
+		// next circulation
+		dividend -= multi*divisor
+	}
+	return result
+}
+*/
