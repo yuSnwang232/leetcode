@@ -1,0 +1,164 @@
+package main
+
+import(
+  "fmt"
+)
+
+func main(){
+      //height := []int{0,1,0,2,1,0,1,3,2,1,2,1}
+      height := []int{1,0}
+	var result int
+	result = trap(height)
+	fmt.Println("%d",result)
+}
+
+func trap(height []int) int {
+	var leftMax, rightMax int
+      result := 0
+	left := 0
+      right := len(height) - 1
+       //if left == right finish
+	for left < right {
+		if height[left] < height[right] {
+			if height[left] > leftMax {
+			//refresh leftmax
+				leftMax = height[left]
+			} else {
+		     //pillar is taller than water surface so must have water
+				result += leftMax - height[left]
+			}
+                   //consider next column
+			left++
+		} else {
+			if height[right] >= rightMax { 
+				//refresh rightmax
+				rightMax = height[right] 
+			} else {
+			//pillar is taller than water surface so must have water
+				result += rightMax - height[right] 
+			}
+                   //consider next column
+			right--
+		}
+	}
+	return result
+}
+
+/*
+func trap(height []int)int{
+	length :=len(height)
+	result :=0
+	
+	for i:=1;i < length - 1;i++{
+		leftMax := 0
+		//Scan and update from the current element to the left
+		for k := i;k >= 0;k--{
+			leftMax =max(height[k],leftMax)
+		}
+             //Scan and update from the current element to the right
+		rightMax :=0
+		for j:=i;j < length;j++{
+			rightMax =max(height[j],rightMax)
+		}
+          //add it
+        minval := min(leftMax,rightMax)
+        water := minval-height[i]
+        result = result + water
+	}
+	return result
+}
+
+func max(a,b int)int{
+	if a>b{
+		return a
+	}
+	return b
+}
+func min(a,b int)int{
+	if a>b{
+		return b
+	}
+	return a
+}
+
+
+*/
+
+/*
+func trap(height []int)int{
+      if len(height)==0{
+		return 0
+	}
+	length :=len(height)
+	res :=0
+	leftmax :=make([]int,length)
+	rightmax :=make([]int,length)
+	leftmax[0]= height[0]
+	rightmax[length-1] = height[length-1]
+       //Find  left_max
+	for i:=1;i < length;i++{
+		leftmax[i] = max(leftmax[i-1],height[i])
+	}
+       //Find right_max
+	for i:= length - 2;i>=0;i--{
+		rightmax[i] = max(rightmax[i+1],height[i])
+	}
+        //scan
+	for i:=1;i < length - 1;i++{
+		waterval := min(leftmax[i],rightmax[i]) - height[i]
+		res += waterval
+	}
+	return res
+}
+
+
+func max(a,b int)int{
+	if a>b{
+		return a
+	}
+	return b
+}
+func min(a,b int)int{
+	if a>b{
+		return b
+	}
+	return a
+}
+*/
+/*
+func trap(height []int) int {
+
+	stack := make([]int, 0)
+      result := 0
+	current := 0
+
+	for current < len(height) {
+		for len(stack) != 0 && height[current] > height[stack[len(stack)-1]] {
+                   //Pop up the stack
+			top := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			if len(stack) == 0 {
+				break
+			}
+                   //calculate distance
+			distance := current - stack[len(stack)-1] - 1
+			//calculate height
+                   h := min(height[current],height[stack[len(stack)-1]]) - height[top]
+			//calculate result
+                   result += distance * h
+		}
+
+		stack = append(stack, current)
+		current++
+
+	}
+	return result
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+*/
