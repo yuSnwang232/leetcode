@@ -1,0 +1,46 @@
+package main
+
+import(
+  "fmt"
+)
+
+func main(){
+      //height := []int{0,1,0,2,1,0,1,3,2,1,2,1}
+      height := []int{1,8,6,2,5,4,8,3,7}
+	//strs := []string{"dog","racecar","car"}
+      var result int
+	result = maxArea(height)
+	fmt.Println("%s",result)
+}
+
+func maxArea(height []int) int {
+    result := 0
+    left, right := 0, len(height) - 1
+
+    for left < right {
+        volume := 0
+        //calculate the present volume
+        volume = (right - left) * min(height[left],height[right])
+        //consider left and right
+        if height[left] < height[right] {
+            left++
+        } else {
+            right--
+          }
+          //every time refresh the result
+           if result < volume {
+                result = volume
+              }
+    }
+    return result
+}
+
+func min(a, b int) int {
+	if a <= b {
+		return a
+	}
+	return b
+}
+
+/*
+/
