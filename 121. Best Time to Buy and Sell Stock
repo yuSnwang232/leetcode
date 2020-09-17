@@ -1,0 +1,65 @@
+package main
+
+import(
+  "fmt"
+)
+
+func main(){
+      prices := []int{7,1,5,3,6,4}
+      var result int
+	result = maxProfit(prices)
+	fmt.Println("%s",result)
+}
+
+func maxProfit(prices []int) int {
+	if len(prices) <= 1 {
+		return 0
+	}
+
+	minprice := prices[0]
+	max := 0
+	for i := 0; i <= len(prices)-1; i++ {
+        //refresh the max profit
+		if prices[i]- minprice > max {
+			max = prices[i] - minprice
+		}
+        //refresh the min price
+		if prices[i] < minprice {
+			minprice = prices[i]
+		}
+	}
+	return max
+}
+/*
+func maxProfit(prices []int) int {
+
+	if len(prices) <= 1 {
+		return 0
+	}
+	buy := prices[0]
+      maxpro := 0
+
+      for i:=1 ; i <= len(prices)-1 ; i++{
+		// buy
+		buymin := min(buy,prices[i])
+		// sell
+		sell := max(-buy+prices[i],maxpro)
+	    maxpro = sell
+        buy = buymin
+        }
+	return maxpro
+}
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+*/
