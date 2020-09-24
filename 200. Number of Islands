@@ -1,0 +1,51 @@
+package main
+
+import(
+  "fmt"
+)
+
+func main(){
+      grid := [][]byte{{'1','1','1','1','0'},{'1','1','0','1','0'},{'1','1','0','0','0'},{'0','0','0','0','0'}}
+
+	var result int
+	result = numIslands(grid)
+	fmt.Println("%d",result)
+}
+
+
+
+func numIslands(grid [][]byte) int {
+    if len(grid) == 0{return 0}
+    row, column := len(grid), len(grid[0])
+    var count int
+
+    for x := 0; x < row; x++{
+        for y := 0; y < column; y++{
+        // begin dfs
+            if grid[x][y] == '1'{
+                count++
+                dfs(x, y, grid)
+            }
+        }
+    }
+    return count
+}
+
+func dfs(x, y int, grid [][]byte){
+    //end condition
+    if x < 0 || y < 0 || x >= len(grid) || y >= len(grid[0]) || grid[x][y] == '0'{
+        return 
+    }
+    //refresh the 1 with 0
+    grid[x][y] = '0'
+    dfs(x + 1, y, grid)
+    dfs(x - 1, y, grid)
+    dfs(x, y + 1, grid)
+    dfs(x, y - 1, grid)
+}
+
+
+
+
+
+
